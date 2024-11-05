@@ -10,7 +10,7 @@ public class TokenVersion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer  id;
+    private Integer id;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
