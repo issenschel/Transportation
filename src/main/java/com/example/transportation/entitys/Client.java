@@ -41,6 +41,6 @@ public class Client {
     @Column(name = "photo")
     private String photo;
 
-    @OneToMany(mappedBy = "proposal")
+    @OneToMany(mappedBy = "client")
     private List<Proposal> proposal;
 }
