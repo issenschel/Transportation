@@ -35,4 +35,8 @@ public class ClientService {
     public Optional<Client> findByPhone(String phone) {
         return clientRepository.findByPhone(phone);
     }
+
+    public void save(Client client){
+        clientRepository.save(client);
+    }
 }
