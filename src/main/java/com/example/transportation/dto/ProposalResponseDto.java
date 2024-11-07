@@ -1,11 +1,13 @@
 package com.example.transportation.dto;
 
 import com.example.transportation.enums.ProposalStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
+@AllArgsConstructor
 public class ProposalResponseDto {
     private int id;
     private int clientId;

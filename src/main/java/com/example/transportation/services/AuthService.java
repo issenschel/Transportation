@@ -1,5 +1,6 @@
 package com.example.transportation.services;
 
+import com.example.transportation.dto.AuthTokenDto;
 import com.example.transportation.dto.ClientDto;
 import com.example.transportation.dto.RegistrationUserDto;
 import com.example.transportation.dto.JwtRequestDto;
@@ -10,11 +11,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,12 +31,14 @@ public class AuthService {
     private final TokenVersionService tokenVersionService;
     private final AssumptionService assumptionService;
 
-    public String createAuthToken(@RequestBody JwtRequestDto authRequest) throws BadCredentialsException {
+    public AuthTokenDto createAuthToken(@RequestBody JwtRequestDto authRequest) throws BadCredentialsException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
         Optional<User> user = userService.findByUsername(authRequest.getUsername());
         String versionId = user.get().getTokenVersion().getVersion();
-        return jwtTokenUtils.generateToken(userDetails, versionId);
+        List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        String token = jwtTokenUtils.generateToken(userDetails, versionId);
+        return new AuthTokenDto(token,roles);
     }
 
     @Transactional

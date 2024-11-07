@@ -1,7 +1,6 @@
 package com.example.transportation.services;
 
 import com.example.transportation.dto.*;
-import com.example.transportation.entitys.Proposal;
 import com.example.transportation.entitys.User;
 import com.example.transportation.utils.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -134,11 +132,8 @@ public class ProfileService {
         return user.map(us ->{
             ListProposalResponseDto listProposalResponseDto = new ListProposalResponseDto();
             Pageable pageable = PageRequest.of(page, 6);
-            Page<Proposal> proposalPage = proposalService.getProposalsByClientId(us.getClient().getId(), pageable);
-            List<ProposalResponseDto> proposalResponseDtoLis = proposalPage.stream()
-                    .map(proposalService::getProposalResponseDto)
-                    .toList();
-            listProposalResponseDto.setProposals(proposalResponseDtoLis);
+            Page<ProposalResponseDto> proposalPage = proposalService.getProposalsByClientId(us.getClient().getId(), pageable);
+            listProposalResponseDto.setProposals(proposalPage.getContent());
             listProposalResponseDto.setCount(proposalPage.getTotalPages());
             return listProposalResponseDto;
         }).orElse(null);

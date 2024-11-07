@@ -45,8 +45,4 @@ public class Proposal {
     @Enumerated(EnumType.ORDINAL)
     private ProposalStatus status;
 
-    @OneToOne(mappedBy = "proposal")
-    private Delivery delivery;
-
-
 }

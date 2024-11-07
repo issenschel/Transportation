@@ -20,6 +20,9 @@ public class Transport {
     @Column(name = "photo")
     private String photo;
 
+    @Column(name = "description")
+    private String description;
+
     @OneToMany(mappedBy = "transport", fetch = FetchType.LAZY)
     private List<Proposal> proposal;
 }

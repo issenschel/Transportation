@@ -5,9 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TransportDto {
+public class TransportProposalDto {
     private Byte id;
     private String name;
-    private String photo;
-    private String description;
 }

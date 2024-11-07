@@ -16,8 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -58,30 +56,10 @@ public class ProposalService {
     public ListProposalDto getProposals(int page) {
         ListProposalDto listProposalDto = new ListProposalDto();
         PageRequest pageRequest = PageRequest.of(page, 6);
-        Page<Proposal> ordersPage = proposalRepository.findAll(pageRequest);
-        List<ProposalResponseDto> listResponse = new ArrayList<>();
-        for(Proposal proposal : ordersPage.getContent()){
-            ProposalResponseDto proposalResponseDto = getProposalResponseDto(proposal);
-            listResponse.add(proposalResponseDto);
-        }
-        listProposalDto.setProposalList(listResponse);
+        Page<ProposalResponseDto> ordersPage = proposalRepository.findAllProposalResponseDto(pageRequest);
+        listProposalDto.setProposalList(ordersPage.getContent());
         listProposalDto.setCount(ordersPage.getTotalPages());
         return listProposalDto;
-    }
-
-    public ProposalResponseDto getProposalResponseDto(Proposal proposal) {
-        ProposalResponseDto proposalResponseDto = new ProposalResponseDto();
-        proposalResponseDto.setId(proposal.getId());
-        proposalResponseDto.setClientId(proposal.getClient().getId());
-        proposalResponseDto.setSenderAddress(proposal.getSenderAddress());
-        proposalResponseDto.setRecipientAddress(proposal.getRecipientAddress());
-        proposalResponseDto.setDateDispatch(proposal.getDateDispatch());
-        proposalResponseDto.setDateReceipt(proposal.getDateReceipt());
-        proposalResponseDto.setTransport(proposal.getTransport().getName());
-        proposalResponseDto.setBudget(proposal.getBudget());
-        proposalResponseDto.setDescription(proposal.getDescription());
-        proposalResponseDto.setStatus(proposal.getStatus());
-        return proposalResponseDto;
     }
 
     public StatusResponseDto changeStatus(int id, ProposalStatusDto proposalStatusDto){
@@ -94,7 +72,7 @@ public class ProposalService {
             return new StatusResponseDto("Заявка не найдена", HttpStatus.NOT_FOUND);
     }
 
-    public Page<Proposal> getProposalsByClientId(int clientId, Pageable pageable) {
+    public Page<ProposalResponseDto> getProposalsByClientId(int clientId, Pageable pageable) {
         return proposalRepository.findByClientId(clientId, pageable);
     }
 }

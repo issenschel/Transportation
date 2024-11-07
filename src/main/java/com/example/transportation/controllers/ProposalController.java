@@ -1,7 +1,7 @@
 package com.example.transportation.controllers;
 
 import com.example.transportation.dto.ProposalRequestDto;
-import com.example.transportation.dto.TransportDto;
+import com.example.transportation.dto.TransportProposalDto;
 import com.example.transportation.entitys.Proposal;
 import com.example.transportation.services.ProposalService;
 import com.example.transportation.services.TransportService;
@@ -35,8 +35,8 @@ public class ProposalController {
 
     @GetMapping("/proposal")
     public ResponseEntity<?> getTransport() {
-        List<TransportDto> transportDto = transportService.findAllTransportDto();
-        return ResponseEntity.ok().body(transportDto);
+        List<TransportProposalDto> transportProposalDto = transportService.findAllTransportProposalDto();
+        return ResponseEntity.ok().body(transportProposalDto);
     }
 
 }
