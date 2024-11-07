@@ -1,9 +1,6 @@
 package com.example.transportation.controllers;
 
-import com.example.transportation.dto.EmailDto;
-import com.example.transportation.dto.JwtRequestDto;
-import com.example.transportation.dto.JwtResponseDto;
-import com.example.transportation.dto.RegistrationUserDto;
+import com.example.transportation.dto.*;
 import com.example.transportation.services.AuthService;
 import com.example.transportation.services.EmailService;
 import com.example.transportation.services.RegistrationValidatorService;
@@ -35,7 +32,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage());
         }
         try {
-            return ResponseEntity.ok(new JwtResponseDto(authService.createAuthToken(authRequest)));
+            return ResponseEntity.ok(authService.createAuthToken(authRequest));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Неверный логин или пароль");
         }

@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Objects;
 
 @RestController
+@RequestMapping("/profile")
 @RequiredArgsConstructor
 public class ProfileController {
     private final ProfileService profileService;
@@ -61,6 +62,16 @@ public class ProfileController {
         }
         return ResponseEntity.ok().body(profileDto);
     }
+
+    @GetMapping("/proposal")
+    public ResponseEntity<?> getProposal(@RequestParam(name = "page") int page){
+        ListProposalResponseDto proposalResponseDtoList = profileService.getProposal(page);
+        if (proposalResponseDtoList == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь не найден");
+        }
+        return ResponseEntity.ok().body(proposalResponseDtoList);
+    }
+
 
     @GetMapping("/photo")
     public ResponseEntity<?> getPhoto(){
