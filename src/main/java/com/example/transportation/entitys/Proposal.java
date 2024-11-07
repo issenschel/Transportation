@@ -1,5 +1,6 @@
 package com.example.transportation.entitys;
 
+import com.example.transportation.enums.ProposalStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -41,7 +42,8 @@ public class Proposal {
     private String description;
 
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.ORDINAL)
+    private ProposalStatus status;
 
     @OneToOne(mappedBy = "proposal")
     private Delivery delivery;

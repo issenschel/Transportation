@@ -23,7 +23,7 @@ public class RegistrationValidatorService {
     @PostConstruct
     public void init() {
         validationRules.put("username", this::validateUsername);
-        validationRules.put("minecraftName", this::validatePhone);
+        validationRules.put("phone", this::validatePhone);
         validationRules.put("passwordMatch", this::validatePasswordMatch);
         validationRules.put("code", this::validateCode);
     }

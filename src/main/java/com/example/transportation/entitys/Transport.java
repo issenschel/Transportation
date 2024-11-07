@@ -12,7 +12,7 @@ public class Transport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Byte id;
 
     @Column(name = "name")
     private String name;
@@ -20,6 +20,6 @@ public class Transport {
     @Column(name = "photo")
     private String photo;
 
-    @OneToMany(mappedBy = "transport")
+    @OneToMany(mappedBy = "transport", fetch = FetchType.LAZY)
     private List<Proposal> proposal;
 }
