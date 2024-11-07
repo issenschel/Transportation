@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class ProposalDto {
+public class ProposalRequestDto {
     @NotBlank(message = "Не указано поле senderAddress")
     @Size(min = 10, max = 80, message = "Адрес не может быть меньше 10 или больше 80")
     private String senderAddress;

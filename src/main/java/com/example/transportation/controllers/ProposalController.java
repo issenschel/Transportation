@@ -1,6 +1,7 @@
 package com.example.transportation.controllers;
 
-import com.example.transportation.dto.ProposalDto;
+import com.example.transportation.dto.ListProposalDto;
+import com.example.transportation.dto.ProposalRequestDto;
 import com.example.transportation.dto.TransportDto;
 import com.example.transportation.entitys.Proposal;
 import com.example.transportation.services.ProposalService;
@@ -10,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,11 +23,11 @@ public class ProposalController {
     private final TransportService transportService;
 
     @PostMapping("/createNewProposal")
-    public ResponseEntity<?> createNewProposal(@Valid @RequestBody ProposalDto proposalDto, BindingResult bindingResult) {
+    public ResponseEntity<?> createNewProposal(@Valid @RequestBody ProposalRequestDto proposalRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage());
         }
-        Proposal proposal = proposalService.createProposalForCurrentUser(proposalDto);
+        Proposal proposal = proposalService.createProposalForCurrentUser(proposalRequestDto);
         if(proposal == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь не найден");
         }
@@ -40,5 +38,11 @@ public class ProposalController {
     public ResponseEntity<?> createNewProposal() {
         List<TransportDto> transportDto = transportService.findAllTransportDto();
         return ResponseEntity.ok().body(transportDto);
+    }
+
+    @GetMapping("/getProposals")
+    public ResponseEntity<?> getProposals(@RequestParam(name = "page") int page) {
+        ListProposalDto listProposalDto = proposalService.getProposals(page);
+        return ResponseEntity.ok().body(listProposalDto);
     }
 }

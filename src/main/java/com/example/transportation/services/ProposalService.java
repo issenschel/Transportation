@@ -1,6 +1,8 @@
 package com.example.transportation.services;
 
-import com.example.transportation.dto.ProposalDto;
+import com.example.transportation.dto.ListProposalDto;
+import com.example.transportation.dto.ProposalRequestDto;
+import com.example.transportation.dto.ProposalResponseDto;
 import com.example.transportation.entitys.Client;
 import com.example.transportation.entitys.Proposal;
 import com.example.transportation.entitys.Transport;
@@ -8,10 +10,14 @@ import com.example.transportation.entitys.User;
 import com.example.transportation.enums.ProposalStatus;
 import com.example.transportation.repositories.ProposalRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,30 +28,58 @@ public class ProposalService {
     private final TransportService transportService;
 
     @Transactional
-    public Proposal createProposalForCurrentUser(ProposalDto proposalDto) {
+    public Proposal createProposalForCurrentUser(ProposalRequestDto proposalRequestDto) {
         Optional<User> user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         return user.map(
                 us -> {
                     Client client = us.getClient();
-                    Optional<Transport> transport = transportService.findById(proposalDto.getTransport());
-                    return createNewProposal(proposalDto,client,transport.get());
+                    Optional<Transport> transport = transportService.findById(proposalRequestDto.getTransport());
+                    return createNewProposal(proposalRequestDto,client,transport.get());
                 }
         ).orElse(null);
     }
 
 
-    public Proposal createNewProposal(ProposalDto proposalDto, Client client, Transport transport) {
+    public Proposal createNewProposal(ProposalRequestDto proposalRequestDto, Client client, Transport transport) {
         Proposal proposal = new Proposal();
         proposal.setClient(client);
-        proposal.setDateDispatch(proposalDto.getDateDispatch());
-        proposal.setDateReceipt(proposalDto.getDateReceipt());
-        proposal.setDescription(proposalDto.getDescription());
-        proposal.setBudget(proposalDto.getBudget());
-        proposal.setSenderAddress(proposalDto.getSenderAddress());
-        proposal.setRecipientAddress(proposalDto.getRecipientAddress());
+        proposal.setDateDispatch(proposalRequestDto.getDateDispatch());
+        proposal.setDateReceipt(proposalRequestDto.getDateReceipt());
+        proposal.setDescription(proposalRequestDto.getDescription());
+        proposal.setBudget(proposalRequestDto.getBudget());
+        proposal.setSenderAddress(proposalRequestDto.getSenderAddress());
+        proposal.setRecipientAddress(proposalRequestDto.getRecipientAddress());
         proposal.setTransport(transport);
         proposal.setStatus(ProposalStatus.PENDING);
         proposalRepository.save(proposal);
         return proposal;
+    }
+
+    public ListProposalDto getProposals(int page) {
+        ListProposalDto listProposalDto = new ListProposalDto();
+        PageRequest pageRequest = PageRequest.of(page, 6);
+        Page<Proposal> ordersPage = proposalRepository.findAll(pageRequest);
+        List<ProposalResponseDto> listResponse = new ArrayList<>();
+        for(Proposal proposal : ordersPage.getContent()){
+            ProposalResponseDto proposalResponseDto = getProposalResponseDto(proposal);
+            listResponse.add(proposalResponseDto);
+        }
+        listProposalDto.setProposalList(listResponse);
+        listProposalDto.setCount(ordersPage.getTotalPages());
+        return listProposalDto;
+    }
+
+    private ProposalResponseDto getProposalResponseDto(Proposal proposal) {
+        ProposalResponseDto proposalResponseDto = new ProposalResponseDto();
+        proposalResponseDto.setId(proposal.getId());
+        proposalResponseDto.setClientId(proposal.getClient().getId());
+        proposalResponseDto.setSenderAddress(proposal.getSenderAddress());
+        proposalResponseDto.setRecipientAddress(proposal.getRecipientAddress());
+        proposalResponseDto.setDateDispatch(proposal.getDateDispatch());
+        proposalResponseDto.setDateReceipt(proposal.getDateReceipt());
+        proposalResponseDto.setTransport(proposal.getTransport().getName());
+        proposalResponseDto.setBudget(proposal.getBudget());
+        proposalResponseDto.setDescription(proposal.getDescription());
+        return proposalResponseDto;
     }
 }
