@@ -10,6 +10,7 @@ import com.example.transportation.repositories.ProposalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -68,7 +69,7 @@ public class ProposalService {
         return listProposalDto;
     }
 
-    private ProposalResponseDto getProposalResponseDto(Proposal proposal) {
+    public ProposalResponseDto getProposalResponseDto(Proposal proposal) {
         ProposalResponseDto proposalResponseDto = new ProposalResponseDto();
         proposalResponseDto.setId(proposal.getId());
         proposalResponseDto.setClientId(proposal.getClient().getId());
@@ -79,6 +80,7 @@ public class ProposalService {
         proposalResponseDto.setTransport(proposal.getTransport().getName());
         proposalResponseDto.setBudget(proposal.getBudget());
         proposalResponseDto.setDescription(proposal.getDescription());
+        proposalResponseDto.setStatus(proposal.getStatus());
         return proposalResponseDto;
     }
 
@@ -90,5 +92,9 @@ public class ProposalService {
                 return new StatusResponseDto("Статус изменён", HttpStatus.OK);
             }
             return new StatusResponseDto("Заявка не найдена", HttpStatus.NOT_FOUND);
+    }
+
+    public Page<Proposal> getProposalsByClientId(int clientId, Pageable pageable) {
+        return proposalRepository.findByClientId(clientId, pageable);
     }
 }

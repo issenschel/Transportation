@@ -1,21 +1,27 @@
 package com.example.transportation.services;
 
 import com.example.transportation.dto.*;
+import com.example.transportation.entitys.Proposal;
 import com.example.transportation.entitys.User;
 import com.example.transportation.utils.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,10 +34,12 @@ public class ProfileService {
     private final JwtTokenUtils jwtTokenUtils;
     private final EmailService emailService;
     private final AssumptionService assumptionService;
+    private final ProposalService proposalService;
 
     @Value("${upload.path}")
     private String uploadPath;
 
+    @Transactional
     public StatusResponseDto changeLogin(LoginChangeDto loginChangeDto) {
         Optional<User> user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         return user.map(us -> {
@@ -51,6 +59,7 @@ public class ProfileService {
         }).orElseGet(() -> new StatusResponseDto("Пользователь не найден", HttpStatus.NOT_FOUND));
     }
 
+    @Transactional
     public StatusResponseDto changePassword(PasswordChangeDto passwordChangeDto) {
         Optional<User> user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         return user.map(us -> {
@@ -69,6 +78,7 @@ public class ProfileService {
         }).orElseGet(() -> new StatusResponseDto("Пользователь не найден", HttpStatus.NOT_FOUND));
     }
 
+    @Transactional
     public StatusResponseDto changeEmail(EmailChangeDto emailChangeDto) {
         Optional<User> user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         return user.map(us -> {
@@ -89,6 +99,7 @@ public class ProfileService {
         }).orElseGet(() -> new StatusResponseDto("Пользователь не найден", HttpStatus.NOT_FOUND));
     }
 
+    @Transactional
     public StatusResponseDto changePhoto(MultipartFile photo) {
         if (photo != null && !photo.getContentType().matches("image/.*")) {
             Optional<User> user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -116,6 +127,21 @@ public class ProfileService {
         return user.map(
                 us -> new ProfileDto(us.getId(), us.getUsername(), us.getClient().getEmail(), us.getClient().getPhone())
         ).orElse(null);
+    }
+
+    public ListProposalResponseDto getProposal(int page){
+        Optional<User> user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        return user.map(us ->{
+            ListProposalResponseDto listProposalResponseDto = new ListProposalResponseDto();
+            Pageable pageable = PageRequest.of(page, 6);
+            Page<Proposal> proposalPage = proposalService.getProposalsByClientId(us.getClient().getId(), pageable);
+            List<ProposalResponseDto> proposalResponseDtoLis = proposalPage.stream()
+                    .map(proposalService::getProposalResponseDto)
+                    .toList();
+            listProposalResponseDto.setProposals(proposalResponseDtoLis);
+            listProposalResponseDto.setCount(proposalPage.getTotalPages());
+            return listProposalResponseDto;
+        }).orElse(null);
     }
 
     public String getPhoto() {

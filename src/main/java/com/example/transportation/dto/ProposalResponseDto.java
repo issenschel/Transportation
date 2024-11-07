@@ -1,5 +1,6 @@
 package com.example.transportation.dto;
 
+import com.example.transportation.enums.ProposalStatus;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -15,4 +16,5 @@ public class ProposalResponseDto {
     private String transport;
     private Integer budget;
     private String description;
+    private ProposalStatus status;
 }
