@@ -1,6 +1,5 @@
 package com.example.transportation.controllers;
 
-import com.example.transportation.dto.ListProposalDto;
 import com.example.transportation.dto.ProposalRequestDto;
 import com.example.transportation.dto.TransportDto;
 import com.example.transportation.entitys.Proposal;
@@ -22,7 +21,7 @@ public class ProposalController {
     private final ProposalService proposalService;
     private final TransportService transportService;
 
-    @PostMapping("/createNewProposal")
+    @PostMapping("/proposal")
     public ResponseEntity<?> createNewProposal(@Valid @RequestBody ProposalRequestDto proposalRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(Objects.requireNonNull(bindingResult.getFieldError()).getDefaultMessage());
@@ -34,15 +33,10 @@ public class ProposalController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/createNewProposal")
-    public ResponseEntity<?> createNewProposal() {
+    @GetMapping("/proposal")
+    public ResponseEntity<?> getTransport() {
         List<TransportDto> transportDto = transportService.findAllTransportDto();
         return ResponseEntity.ok().body(transportDto);
     }
 
-    @GetMapping("/getProposals")
-    public ResponseEntity<?> getProposals(@RequestParam(name = "page") int page) {
-        ListProposalDto listProposalDto = proposalService.getProposals(page);
-        return ResponseEntity.ok().body(listProposalDto);
-    }
 }

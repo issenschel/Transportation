@@ -32,7 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/changeLogin").authenticated()
                         .requestMatchers("/changePassword").authenticated()
                         .requestMatchers("/changeEmail").authenticated()
-                        .requestMatchers("/getProposals").hasRole("ADMIN")
+                        .requestMatchers("/admin/proposal").authenticated()
                         .anyRequest().permitAll()).sessionManagement(sessionManagementCustomizer -> sessionManagementCustomizer
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)).exceptionHandling(exceptionHandlingCustomizer ->
                         exceptionHandlingCustomizer.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)

@@ -1,8 +1,6 @@
 package com.example.transportation.services;
 
-import com.example.transportation.dto.ListProposalDto;
-import com.example.transportation.dto.ProposalRequestDto;
-import com.example.transportation.dto.ProposalResponseDto;
+import com.example.transportation.dto.*;
 import com.example.transportation.entitys.Client;
 import com.example.transportation.entitys.Proposal;
 import com.example.transportation.entitys.Transport;
@@ -12,6 +10,7 @@ import com.example.transportation.repositories.ProposalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,5 +80,15 @@ public class ProposalService {
         proposalResponseDto.setBudget(proposal.getBudget());
         proposalResponseDto.setDescription(proposal.getDescription());
         return proposalResponseDto;
+    }
+
+    public StatusResponseDto changeStatus(int id, ProposalStatusDto proposalStatusDto){
+            Optional<Proposal> proposal = proposalRepository.findById(id);
+            if (proposal.isPresent()) {
+                proposal.get().setStatus(proposalStatusDto.getStatus());
+                proposalRepository.save(proposal.get());
+                return new StatusResponseDto("Статус изменён", HttpStatus.OK);
+            }
+            return new StatusResponseDto("Заявка не найдена", HttpStatus.NOT_FOUND);
     }
 }
