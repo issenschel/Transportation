@@ -1,6 +1,8 @@
 package com.example.transportation.controllers;
 
-import com.example.transportation.dto.*;
+import com.example.transportation.dto.auth.JwtRequestDto;
+import com.example.transportation.dto.auth.RegistrationUserDto;
+import com.example.transportation.dto.auth.EmailDto;
 import com.example.transportation.services.AuthService;
 import com.example.transportation.services.EmailService;
 import com.example.transportation.services.RegistrationValidatorService;

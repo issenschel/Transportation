@@ -1,6 +1,6 @@
 package com.example.transportation.interfaces;
 
-import com.example.transportation.dto.RegistrationUserDto;
+import com.example.transportation.dto.auth.RegistrationUserDto;
 
 import java.util.Optional;
 

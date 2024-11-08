@@ -1,4 +1,4 @@
-package com.example.transportation.dto;
+package com.example.transportation.dto.transport;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

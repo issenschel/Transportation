@@ -1,6 +1,12 @@
 package com.example.transportation.services;
 
-import com.example.transportation.dto.*;
+import com.example.transportation.dto.other.StatusResponseDto;
+import com.example.transportation.dto.profile.EmailChangeDto;
+import com.example.transportation.dto.profile.LoginChangeDto;
+import com.example.transportation.dto.profile.PasswordChangeDto;
+import com.example.transportation.dto.profile.ProfileDto;
+import com.example.transportation.dto.proposal.ListProposalDto;
+import com.example.transportation.dto.proposal.ProposalResponseDto;
 import com.example.transportation.entitys.User;
 import com.example.transportation.utils.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
@@ -127,13 +133,13 @@ public class ProfileService {
         ).orElse(null);
     }
 
-    public ListProposalResponseDto getProposal(int page){
+    public ListProposalDto getProposal(int page){
         Optional<User> user = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         return user.map(us ->{
-            ListProposalResponseDto listProposalResponseDto = new ListProposalResponseDto();
+            ListProposalDto listProposalResponseDto = new ListProposalDto();
             Pageable pageable = PageRequest.of(page, 6);
             Page<ProposalResponseDto> proposalPage = proposalService.getProposalsByClientId(us.getClient().getId(), pageable);
-            listProposalResponseDto.setProposals(proposalPage.getContent());
+            listProposalResponseDto.setProposalsList(proposalPage.getContent());
             listProposalResponseDto.setCount(proposalPage.getTotalPages());
             return listProposalResponseDto;
         }).orElse(null);

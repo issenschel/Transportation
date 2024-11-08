@@ -1,6 +1,12 @@
 package com.example.transportation.controllers;
 
-import com.example.transportation.dto.*;
+import com.example.transportation.dto.auth.JwtResponseDto;
+import com.example.transportation.dto.other.StatusResponseDto;
+import com.example.transportation.dto.profile.EmailChangeDto;
+import com.example.transportation.dto.profile.LoginChangeDto;
+import com.example.transportation.dto.profile.PasswordChangeDto;
+import com.example.transportation.dto.profile.ProfileDto;
+import com.example.transportation.dto.proposal.ListProposalDto;
 import com.example.transportation.services.ProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -65,11 +71,11 @@ public class ProfileController {
 
     @GetMapping("/proposal")
     public ResponseEntity<?> getProposal(@RequestParam(name = "page") int page){
-        ListProposalResponseDto proposalResponseDtoList = profileService.getProposal(page);
-        if (proposalResponseDtoList == null){
+        ListProposalDto listProposalDto = profileService.getProposal(page);
+        if (listProposalDto == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь не найден");
         }
-        return ResponseEntity.ok().body(proposalResponseDtoList);
+        return ResponseEntity.ok().body(listProposalDto);
     }
 
 

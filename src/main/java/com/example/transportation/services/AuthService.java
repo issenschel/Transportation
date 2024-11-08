@@ -1,9 +1,9 @@
 package com.example.transportation.services;
 
-import com.example.transportation.dto.AuthTokenDto;
-import com.example.transportation.dto.ClientDto;
-import com.example.transportation.dto.RegistrationUserDto;
-import com.example.transportation.dto.JwtRequestDto;
+import com.example.transportation.dto.auth.AuthTokenDto;
+import com.example.transportation.dto.other.ClientDto;
+import com.example.transportation.dto.auth.RegistrationUserDto;
+import com.example.transportation.dto.auth.JwtRequestDto;
 import com.example.transportation.entitys.Client;
 import com.example.transportation.entitys.User;
 import com.example.transportation.utils.JwtTokenUtils;

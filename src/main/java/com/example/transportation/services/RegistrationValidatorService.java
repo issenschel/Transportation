@@ -1,7 +1,7 @@
 package com.example.transportation.services;
 
-import com.example.transportation.dto.EmailDto;
-import com.example.transportation.dto.RegistrationUserDto;
+import com.example.transportation.dto.auth.EmailDto;
+import com.example.transportation.dto.auth.RegistrationUserDto;
 import com.example.transportation.interfaces.ValidationRule;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

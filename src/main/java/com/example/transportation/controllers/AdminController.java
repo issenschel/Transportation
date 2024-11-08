@@ -1,8 +1,8 @@
 package com.example.transportation.controllers;
 
-import com.example.transportation.dto.ListProposalDto;
-import com.example.transportation.dto.ProposalStatusDto;
-import com.example.transportation.dto.StatusResponseDto;
+import com.example.transportation.dto.proposal.ListProposalDto;
+import com.example.transportation.dto.proposal.ProposalStatusDto;
+import com.example.transportation.dto.other.StatusResponseDto;
 import com.example.transportation.services.ProposalService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

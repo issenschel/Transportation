@@ -1,7 +1,7 @@
 package com.example.transportation.services;
 
-import com.example.transportation.dto.TransportDto;
-import com.example.transportation.dto.TransportProposalDto;
+import com.example.transportation.dto.transport.TransportDto;
+import com.example.transportation.dto.transport.TransportProposalDto;
 import com.example.transportation.entitys.Transport;
 import com.example.transportation.repositories.TransportRepository;
 import lombok.RequiredArgsConstructor;
