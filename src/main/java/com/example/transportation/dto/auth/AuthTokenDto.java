@@ -1,4 +1,4 @@
-package com.example.transportation.dto;
+package com.example.transportation.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.example.transportation.dto;
+package com.example.transportation.dto.proposal;
 
 import com.example.transportation.enums.ProposalStatus;
 import lombok.AllArgsConstructor;

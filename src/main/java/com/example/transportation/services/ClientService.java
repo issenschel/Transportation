@@ -1,6 +1,6 @@
 package com.example.transportation.services;
 
-import com.example.transportation.dto.RegistrationUserDto;
+import com.example.transportation.dto.auth.RegistrationUserDto;
 import com.example.transportation.entitys.Client;
 import com.example.transportation.entitys.User;
 import com.example.transportation.repositories.ClientRepository;

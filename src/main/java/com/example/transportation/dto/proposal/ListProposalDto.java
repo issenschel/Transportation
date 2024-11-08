@@ -1,4 +1,4 @@
-package com.example.transportation.dto;
+package com.example.transportation.dto.proposal;
 
 import lombok.Data;
 
@@ -6,6 +6,6 @@ import java.util.List;
 
 @Data
 public class ListProposalDto {
-    List<ProposalResponseDto> proposalList;
+    List<ProposalResponseDto> proposalsList;
     int count;
 }

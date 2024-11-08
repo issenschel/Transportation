@@ -1,6 +1,10 @@
 package com.example.transportation.services;
 
-import com.example.transportation.dto.*;
+import com.example.transportation.dto.other.StatusResponseDto;
+import com.example.transportation.dto.proposal.ListProposalDto;
+import com.example.transportation.dto.proposal.ProposalRequestDto;
+import com.example.transportation.dto.proposal.ProposalResponseDto;
+import com.example.transportation.dto.proposal.ProposalStatusDto;
 import com.example.transportation.entitys.Client;
 import com.example.transportation.entitys.Proposal;
 import com.example.transportation.entitys.Transport;
@@ -57,7 +61,7 @@ public class ProposalService {
         ListProposalDto listProposalDto = new ListProposalDto();
         PageRequest pageRequest = PageRequest.of(page, 6);
         Page<ProposalResponseDto> ordersPage = proposalRepository.findAllProposalResponseDto(pageRequest);
-        listProposalDto.setProposalList(ordersPage.getContent());
+        listProposalDto.setProposalsList(ordersPage.getContent());
         listProposalDto.setCount(ordersPage.getTotalPages());
         return listProposalDto;
     }

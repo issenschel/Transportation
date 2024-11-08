@@ -1,7 +1,7 @@
 package com.example.transportation.controllers;
 
-import com.example.transportation.dto.ProposalRequestDto;
-import com.example.transportation.dto.TransportProposalDto;
+import com.example.transportation.dto.proposal.ProposalRequestDto;
+import com.example.transportation.dto.transport.TransportProposalDto;
 import com.example.transportation.entitys.Proposal;
 import com.example.transportation.services.ProposalService;
 import com.example.transportation.services.TransportService;
